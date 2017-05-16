@@ -12,7 +12,7 @@ import random, string
 import requests
 import jinja2
 import httplib2
-# import db_methods
+import db_methods
 import time
 import os
 import json
@@ -44,9 +44,15 @@ def login_required(func):
 
 @app.route('/')
 def frontPage():
+    """ Front Page Function """
     return render_template('front.html')
 
-
+@app.route('/games/')
+def gamesPage():
+    """ View Recent Games Function """
+    games_list = db_methods.getRecentGames()
+    genres = db_methods.getAllGenres()
+    return render_template('games.html', games = games_list, genres = genres)
 
 
 

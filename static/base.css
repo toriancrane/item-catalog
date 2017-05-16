@@ -11,6 +11,10 @@ body {
 	transition: transform 0.3s; 
 }
 
+.navbar {
+	margin: 3px;
+}
+
 .btn.btn-circle {
 	border-radius: 50px; 
 }

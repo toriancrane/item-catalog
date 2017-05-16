@@ -1,0 +1,76 @@
+
+.navbar-fixed-left {
+  width: 240px;
+  position: absolute;
+  border-radius: 0;
+  height: 100%;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  width: 230px;
+}
+
+.navbar-fixed-left + .container {
+  padding-left: 160px;
+}
+
+ .panel {
+    box-shadow: 0 0 15px black;
+    background-color: #565656;
+    border-color: #565656;
+    color: white;
+ }
+
+.well {
+	background-color: #565656;
+	border-color: #565656;
+}
+
+.card {
+    font-size: 1em;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    border-radius: .28571429rem;
+    box-shadow: 0 0 15px black;
+}
+
+.card-block {
+    font-size: 1em;
+    position: relative;
+    margin: 0;
+    padding: 1em;
+    border: none;
+    border-top: 1px solid rgba(34, 36, 38, .1);
+    box-shadow: none;
+    background-color: #D7CEC7;
+    color: black;
+}
+
+.card-img-top {
+    display: block;
+    width: 100%;
+    max-height: 400px;
+}
+
+.card-title {
+    font-size: 1.28571429em;
+    font-weight: 700;
+    line-height: 1.2857em;
+}
+
+.card-footer {
+    font-size: 1em;
+    position: static;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    padding: .75em 1em;
+    color: rgba(0, 0, 0, .4);
+    border-top: 1px solid rgba(0, 0, 0, .05) !important;
+    background: #fff;
+}
+
+.card-inverse .btn {
+    border: 1px solid rgba(0, 0, 0, .05);
+}
