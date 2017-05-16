@@ -49,7 +49,7 @@ def getAllGenres():
 
 def getRecentGames():
     """ Query all games and return most recently added, max of 12 """
-    recent_games = session.query(Game).order_by(Game.time_created.desc()).limit(12)all()
+    recent_games = session.query(Game).order_by(Game.time_created.desc()).limit(12).all()
     return recent_games
 
 def filterByGenre(genre):
@@ -61,3 +61,11 @@ def addNewGame(name, desc, genre, price, picture, user_id):
                     price = price, picture = picture, user_id = user_id)
     session.add(new_game)
     session.commit()
+
+def searchGameByName(name):
+    game = session.query(Game).filter_by(name = name).one()
+    return game
+
+def searchGameByID(game_id):
+    game = session.query(Game).filter_by(id = game_id).one()
+    return game

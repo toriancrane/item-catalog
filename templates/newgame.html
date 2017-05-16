@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/newgame.css">
+<div class="container">
+<div class="row">
+    <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form method="POST">
+                <div>
+                    <div class="form-group">
+                        <label>Game Name:</label>
+                        <input type="text" name="game_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Game Description:</label>
+                        <textarea class="form-control" rows="5" id="game_desc" name="game_desc" required></textarea>
+                    </div>
+                    <div class="form-group">
+						<label for="game_genre">Game Genre:</label>
+						<select class="form-control" id="game_genre" name="game_genre" required>
+					 		<option disabled selected value> -- select a genre -- </option>
+						    <option>First-person shooter</option>
+						    <option>MOBA</option>
+						    <option>Action role-playing</option>
+						    <option>Survival</option>
+						    <option>Visual Novel</option>
+						    <option>MMORPG</option>
+						    <option>Role-playing</option>
+						    <option>Simulation</option>
+						    <option>Fighting</option>
+						    <option>Racing</option>
+						    <option>Sports</option>
+						    <option>Real-time strategy</option>
+						    <option>Turn-based strategy</option>
+					  	</select>
+                    </div>
+                    <div class="form-group">
+                        <label>Game Price</label>
+                        <input type="text" name="game_price" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Game Image (please paste the link of the image below):</label>
+                        <input type="text" name="game_pic" class="form-control" required>
+                    </div>
+
+                    <div class="center-block">
+                        <div class="col-xs-6 text-left">
+                            <button class="btn btn-success btn-add btn-block" type="submit">Add</button>
+                        </div>
+                        <div class="col-xs-6 text-right"> 
+                            <a href="/games" class="btn btn-danger btn-sm btn-block">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+	
+</div>
+
+{% endblock %}

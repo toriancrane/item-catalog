@@ -34,6 +34,7 @@
     border: none;
     border-radius: .28571429rem;
     box-shadow: 0 0 15px black;
+    background-color: #D7CEC7;
 }
 
 .card-block {
@@ -44,7 +45,6 @@
     border: none;
     border-top: 1px solid rgba(34, 36, 38, .1);
     box-shadow: none;
-    background-color: #D7CEC7;
     color: black;
 }
 

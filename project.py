@@ -54,7 +54,31 @@ def gamesPage():
     genres = db_methods.getAllGenres()
     return render_template('games.html', games = games_list, genres = genres)
 
+@app.route('/games/new/', methods=['GET', 'POST'])
+def newGamePage():
+    """ Create New Game Function """
+    if request.method == 'POST':
+        game_name = request.form['game_name']
+        game_desc = request.form['game_desc']
+        game_genre = request.form['game_genre']
+        game_price = request.form['game_price']
+        game_pic = request.form['game_pic']
+        #Hardcoding user_id for testing purposes until auth functionality implemented
+        game_user = 2
+        db_methods.addNewGame(game_name, game_desc, game_genre,
+                            game_price, game_pic, game_user)
+        time.sleep(0.1)
+        game = db_methods.searchGameByName(game_name)
 
+        return redirect('/games/%s/info' % game.id)
+    else:
+        return render_template('newgame.html')
+
+@app.route('/games/<int:game_id>/info/')
+def viewGamePage(game_id):
+    """ View Game Info Function """
+    game = db_methods.searchGameByID(game_id)
+    return render_template('info.html', game = game)
 
 if __name__ == '__main__':
     app.secret_key = 'gDI1tL5OC54UiTF3g18a-bWg'
