@@ -80,6 +80,35 @@ def viewGamePage(game_id):
     game = db_methods.searchGameByID(game_id)
     return render_template('info.html', game = game)
 
+@app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
+def editGamePage(game_id):
+    """ Edit Game Function """
+    game = db_methods.searchGameByID(game_id)
+    if request.method == 'POST':
+        game_name = request.form['game_name']
+        game_desc = request.form['game_desc']
+        game_genre = request.form['game_genre']
+        game_price = request.form['game_price']
+        game_pic = request.form['game_pic']
+        #Hardcoding user_id for testing purposes until auth functionality implemented
+        db_methods.editGame(game_name, game_desc, game_genre,
+                            game_price, game_pic, game_id)
+        time.sleep(0.1)
+        return redirect('/games/%s/info' % game.id)
+    else:
+        return render_template('editgame.html', game = game)
+
+@app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
+def deleteGamePage(game_id):
+    game = db_methods.searchGameByID(game_id)
+    if request.method == 'POST':
+        error = game.name + " has been deleted from the database."
+        db_methods.deleteGame(game_id)
+        return render_template('deleteconfirmation.html', error = error)
+    else:
+        error = "Are you sure you want to delete this game?"
+        return render_template('deletegame.html', error = error, game = game)
+
 if __name__ == '__main__':
     app.secret_key = 'gDI1tL5OC54UiTF3g18a-bWg'
     app.debug = True

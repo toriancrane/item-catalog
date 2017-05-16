@@ -62,6 +62,21 @@ def addNewGame(name, desc, genre, price, picture, user_id):
     session.add(new_game)
     session.commit()
 
+def editGame(name, desc, genre, price, picture, game_id):
+    game = session.query(Game).filter_by(id = game_id).one()
+    game.name = name
+    game.description = desc
+    game.genre = genre
+    game.price = price
+    game.picture = picture
+    session.add(game)
+    session.commit()
+
+def deleteGame(game_id):
+    game = session.query(Game).filter_by(id = game_id).one()
+    session.delete(game)
+    session.commit()
+
 def searchGameByName(name):
     game = session.query(Game).filter_by(name = name).one()
     return game
