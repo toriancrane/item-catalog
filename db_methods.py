@@ -48,8 +48,8 @@ def getAllGenres():
     return genres
 
 def getRecentGames():
-    """ Query all games and return most recently added, max of 9 """
-    recent_games = session.query(Game).order_by(Game.time_created.desc()).all()
+    """ Query all games and return most recently added, max of 12 """
+    recent_games = session.query(Game).order_by(Game.time_created.desc()).limit(12)all()
     return recent_games
 
 def filterByGenre(genre):

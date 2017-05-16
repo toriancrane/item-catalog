@@ -30,6 +30,7 @@
     font-size: 1em;
     overflow: hidden;
     padding: 0;
+    margin-bottom: 20px;
     border: none;
     border-radius: .28571429rem;
     box-shadow: 0 0 15px black;
@@ -50,7 +51,7 @@
 .card-img-top {
     display: block;
     width: 100%;
-    max-height: 400px;
+    height: 325px;
 }
 
 .card-title {

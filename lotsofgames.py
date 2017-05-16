@@ -43,7 +43,8 @@ session.commit()
 
 game5 = Game(user_id = 1, name = "Heroes of the Storm", description = "Heroes of the Storm (HotS) is a multiplayer online battle arena video game developed and published by Blizzard Entertainment for Microsoft Windows and macOS.",
 		genre = "MOBA", price = "Free", picture = "https://upload.wikimedia.org/wikipedia/en/4/44/Heroes_of_the_Storm_logo_2016.png")
-
+session.add(game5)
+session.commit()
 
 # Games by Torian Crane #2
 game3 = Game(user_id = 2, name = "Destiny", description = "Destiny is an online-only multiplayer first-person shooter video game developed by Bungie and published by Activision.",
