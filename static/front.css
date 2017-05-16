@@ -1,5 +1,5 @@
 body {
-    background: url(https://images.unsplash.com/10/wii.jpg?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&s=977ef275604c8fa6777e507bc87185fd);
+    background: url(http://img07.deviantart.net/0528/i/2012/198/3/4/yo_videogames__by_ry_spirit-d57k3ay.jpg);
     background-size: cover;
     background-position: center; 
     font-family: Lato!important;
@@ -14,19 +14,16 @@ html {
     height: 100%;
 }
 
-.jumbotron{
-    border-radius:0px!important;
-    box-shadow:1px 1px 4px rgba(0,0,0,0.4);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url(https://images7.alphacoders.com/708/thumb-1920-708805.jpg); 
-    position: relative;
-    height: 100%;
-}
+/*.title{
+    background-color:#FAFAFA;
+    border:1px solid #EFEFEF;
+    padding:15px 15px 20px 15px;
+    border-radius:3px;
+}*/
 
-.jumbotron .btn{
-    border-radius:0px!important;
+.btn{
+    border-radius:15px!important;
     box-shadow:1px 1px 4px rgba(0,0,0,0.4);
-    padding:10px 40px;
+    margin-top: 255px;
+    margin-left: 15px;
 }
