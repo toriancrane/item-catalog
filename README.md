@@ -1,7 +1,7 @@
 # Wild (Item-Catalog)
 Wild is a video game catalog where users can view a catalog of games, view games by genre, add new games, or edit/delete a game. A user must be logged in to do anything more than view game information, and they can only modify the games that they have entered into the site.
 
-## Installation
+## Installation and Usage
 In order to run this application, users will need to have Python and Git installed on their machines.
 
 They will then need to clone this Github Repo by running the following command in their terminal:
