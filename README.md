@@ -6,26 +6,26 @@ In order to run this application, users will need to have Python and Git install
 
 They will then need to clone this Github Repo by running the following command in their terminal:
 
-git clone https://github.com/toriancrane/item-catalog.git
+    $ git clone https://github.com/toriancrane/item-catalog.git
 
 Use the terminal to navigate into the folder where the application files are housed.
 
 To install the requirements necessary to run the application, enter:
 
-pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
 To set up the database that will keep track of game information, enter:
 
-python database_setup.py
+    $ python database_setup.py
 
 A list of games and game info has been provided for users to pre-populate the database with some dummy information
 
 To populate the database with dummy information, enter:
 
-python lotsofgames.py
+    $ python lotsofgames.py
 
 To run the server and browse the application, enter:
 
-python project.py
+    $ python project.py
 
 Then, navigate to localhost:8000 in your browser.
