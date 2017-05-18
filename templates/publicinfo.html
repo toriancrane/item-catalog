@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/info.css">
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<img class="img-responsive center-block" src="{{game.picture}}">
+		<h2>{{game.name}} - <small>{{game.price}}</small></h2>
+		<h4>{{game.description}}</h4>
+		<br>
+	</div>
+	<div class="col-md-4"></div>
+</div>
+{% endblock %}

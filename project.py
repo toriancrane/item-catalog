@@ -24,23 +24,9 @@ from oauth2client.client import FlowExchangeError
 
 app = Flask(__name__)
 
-# CLIENT_ID = json.loads(
-#     open('client_secrets.json', 'r').read())['web']['client_id']
-# APPLICATION_NAME = "Restaurant Menu Application"
-
-#####   User Login Decorator    #####
-def login_required(func):
-    """
-    A decorator to confirm a user is logged in or redirect as needed.
-    """
-    @wraps(func)
-    def check_login(*args, **kwargs):
-        # Redirect to login if user not logged in, else execute func.
-        if 'username' not in login_session:
-            return redirect('/login')
-        else:
-            return func(*args, **kwargs)
-    return check_login
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "Wild Game Catalog"
 
 @app.route('/login')
 def showLogin():
@@ -48,15 +34,6 @@ def showLogin():
                 for x in xrange(32))
     login_session['state'] = state
     return render_template('signin.html', STATE = state)
-
-def createUser(login_session):
-    user_name = login_session['username']
-    user_email = login_session['email']
-    user_pic = login_session['picture']
-    db_methods.addNewUser(user_name, user_email, user_pic)
-    
-    user_id = db_methods.getUserID(user_email)
-    return user_id
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -132,7 +109,7 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-    user_id = db_methods.getUserID(login_session['email'])
+    user_id = db_methods.getUserIDByEmail(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
@@ -177,17 +154,50 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+#####   User Login Decorator    #####
+def login_required(func):
+    """
+    A decorator to confirm a user is logged in or redirect as needed.
+    """
+    @wraps(func)
+    def check_login(*args, **kwargs):
+        # Redirect to login if user not logged in, else execute func.
+        if 'username' not in login_session:
+            return redirect('/login')
+        else:
+            return func(*args, **kwargs)
+    return check_login
+
+def createUser(login_session):
+    user_name = login_session['username']
+    user_email = login_session['email']
+    user_pic = login_session['picture']
+    db_methods.addNewUser(user_name, user_email, user_pic)
+    
+    user_id = db_methods.getUserID(user_email)
+    return user_id
+
 @app.route('/')
 def frontPage():
     """ Front Page Function """
-    return render_template('front.html')
+    if 'username' not in login_session:
+        return render_template('front.html')
+    else:
+        user_id = login_session['user_id']
+        return render_template('front.html', user_id = user_id)
+
 
 @app.route('/games/')
 def gamesPage():
     """ View Recent Games Function """
     games_list = db_methods.getRecentGames()
     genres = db_methods.getAllGenres()
-    return render_template('games.html', games = games_list, genres = genres)
+    if 'username' not in login_session:
+        return render_template('publicgames.html', games = games_list, genres = genres)
+    else:
+        user_id = login_session['user_id']
+        return render_template('games.html', games = games_list,
+                            genres = genres, user_id = user_id)
 
 @app.route('/games/genre/<int:genre_id>/')
 def gamesByGenrePage(genre_id):
@@ -195,11 +205,17 @@ def gamesByGenrePage(genre_id):
     games_list = db_methods.searchGamesByGenreID(genre_id)
     all_genres = db_methods.getAllGenres()
     genre = db_methods.searchGenreByID(genre_id)
-    return render_template('gamesbygenre.html', games = games_list,
+    if 'username' not in login_session:
+        return render_template('publicgamesbygenre.html', games = games_list,
                             genres = all_genres, genre = genre)
+    else:
+        user_id = login_session['user_id']
+        return render_template('gamesbygenre.html', games = games_list,
+                            genres = all_genres, genre = genre, user_id = user_id)
 
 
 @app.route('/games/new/', methods=['GET', 'POST'])
+@login_required
 def newGamePage():
     """ Create New Game Function """
     if request.method == 'POST':
@@ -221,15 +237,21 @@ def newGamePage():
 
         return redirect('/games/%s/info' % game.id)
     else:
-        return render_template('newgame.html')
+        user_id = login_session['user_id']
+        return render_template('newgame.html', user_id = user_id)
 
 @app.route('/games/<int:game_id>/info/')
 def viewGamePage(game_id):
     """ View Game Info Function """
     game = db_methods.searchGameByID(game_id)
-    return render_template('info.html', game = game)
+    if 'username' not in login_session:
+        return render_template('publicinfo.html', game = game)
+    else:
+        user_id = login_session['user_id']
+        return render_template('info.html', game = game, user_id = user_id)
 
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def editGamePage(game_id):
     """ Edit Game Function """
     game = db_methods.searchGameByID(game_id)
@@ -248,9 +270,12 @@ def editGamePage(game_id):
         time.sleep(0.1)
         return redirect('/games/%s/info' % game.id)
     else:
-        return render_template('editgame.html', game = game)
+        user_id = login_session['user_id']
+        return render_template('editgame.html', game = game, 
+                                user_id = user_id)
 
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteGamePage(game_id):
     game = db_methods.searchGameByID(game_id)
     if request.method == 'POST':
@@ -259,7 +284,9 @@ def deleteGamePage(game_id):
         return render_template('deleteconfirmation.html', error = error)
     else:
         error = "Are you sure you want to delete this game?"
-        return render_template('deletegame.html', error = error, game = game)
+        user_id = login_session['user_id']
+        return render_template('deletegame.html', error = error,
+                                game = game, user_id = user_id)
 
 # JSON API Endpoints
 @app.route('/games/JSON/')
