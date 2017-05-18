@@ -218,14 +218,15 @@ def gamesByGenrePage(genre_id):
 @login_required
 def newGamePage():
     """ Create New Game Function """
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         game_name = request.form['game_name']
         game_desc = request.form['game_desc']
         game_genre = request.form['game_genre']
         game_price = request.form['game_price']
         game_pic = request.form['game_pic']
-        #Hardcoding user_id for testing purposes until auth functionality implemented
-        game_user = 2
+        game_user = login_session['user_id']
 
         #Retrieve genre id from genre name
         genre_id = db_methods.searchGenreIDByName(game_genre)
@@ -237,8 +238,7 @@ def newGamePage():
 
         return redirect('/games/%s/info' % game.id)
     else:
-        user_id = login_session['user_id']
-        return render_template('newgame.html', user_id = user_id)
+        return render_template('newgame.html', user_id = game_user)
 
 @app.route('/games/<int:game_id>/info/')
 def viewGamePage(game_id):
