@@ -18,6 +18,15 @@ class User(Base):
     email = Column(String(250), nullable = False)
     picture = Column(String(250))
 
+class Genre(Base):
+    """ Corresponds to the Genre table """
+    # Table information
+    __tablename__ = 'genre'
+
+    # Mappers
+    id = Column(Integer, primary_key = True)
+    name = Column(String(250), nullable = False)  
+
 class Game(Base):
     """ Corresponds to the Game table """
     # Table information
@@ -27,10 +36,11 @@ class Game(Base):
     id = Column(Integer, primary_key = True)
     name = Column(String(80), nullable = False)
     description = Column(String(250), nullable = False)
-    genre = Column(String(250), nullable = False)
     price = Column(String(8))
     picture = Column(String(250))
     time_created = Column(DateTime(timezone=True), server_default=func.now())
+    genre_id = Column(Integer, ForeignKey('genre.id'))
+    genre = relationship(Genre)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 

@@ -1,7 +1,7 @@
 from flask import flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, User, Game
+from database_setup import Base, User, Game, Genre
 
 engine = create_engine('sqlite:///gamecatalog.db?check_same_thread=False')
 # Bind the engine to the metadata of the Base class so that the
@@ -44,29 +44,37 @@ def getAllGames():
     return games
 
 def getAllGenres():
-    genres = session.query(Game.genre).distinct()
+    genres = session.query(Genre).all()
     return genres
+
+def searchGenreIDByName(name):
+    genre = session.query(Genre).filter_by(name = name).one()
+    return genre.id
+
+def searchGenreByID(genre_id):
+    genre = session.query(Genre).filter_by(id = genre_id).one()
+    return genre
 
 def getRecentGames():
     """ Query all games and return most recently added, max of 12 """
     recent_games = session.query(Game).order_by(Game.time_created.desc()).limit(12).all()
     return recent_games
 
-def filterByGenre(genre):
-    games = session.query(Game).filter_by(genre = genre).all()
+def searchGamesByGenreID(genre_id):
+    games = session.query(Game).filter_by(genre_id = genre_id).all()
     return games
 
-def addNewGame(name, desc, genre, price, picture, user_id):
-    new_game = Game(name = name, description = desc, genre = genre,
+def addNewGame(name, desc, genre_id, price, picture, user_id):
+    new_game = Game(name = name, description = desc, genre_id = genre_id,
                     price = price, picture = picture, user_id = user_id)
     session.add(new_game)
     session.commit()
 
-def editGame(name, desc, genre, price, picture, game_id):
+def editGame(name, desc, genre_id, price, picture, game_id):
     game = session.query(Game).filter_by(id = game_id).one()
     game.name = name
     game.description = desc
-    game.genre = genre
+    game.genre_id = genre_id
     game.price = price
     game.picture = picture
     session.add(game)

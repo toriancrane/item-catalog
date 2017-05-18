@@ -54,6 +54,16 @@ def gamesPage():
     genres = db_methods.getAllGenres()
     return render_template('games.html', games = games_list, genres = genres)
 
+@app.route('/games/genre/<int:genre_id>/')
+def gamesByGenrePage(genre_id):
+    """ View Games by Genre Function """
+    games_list = db_methods.searchGamesByGenreID(genre_id)
+    all_genres = db_methods.getAllGenres()
+    genre = db_methods.searchGenreByID(genre_id)
+    return render_template('gamesbygenre.html', games = games_list,
+                            genres = all_genres, genre = genre)
+
+
 @app.route('/games/new/', methods=['GET', 'POST'])
 def newGamePage():
     """ Create New Game Function """
@@ -65,7 +75,11 @@ def newGamePage():
         game_pic = request.form['game_pic']
         #Hardcoding user_id for testing purposes until auth functionality implemented
         game_user = 2
-        db_methods.addNewGame(game_name, game_desc, game_genre,
+
+        #Retrieve genre id from genre name
+        genre_id = db_methods.searchGenreIDByName(game_genre)
+
+        db_methods.addNewGame(game_name, game_desc, genre_id,
                             game_price, game_pic, game_user)
         time.sleep(0.1)
         game = db_methods.searchGameByName(game_name)
@@ -90,8 +104,11 @@ def editGamePage(game_id):
         game_genre = request.form['game_genre']
         game_price = request.form['game_price']
         game_pic = request.form['game_pic']
-        #Hardcoding user_id for testing purposes until auth functionality implemented
-        db_methods.editGame(game_name, game_desc, game_genre,
+
+        #Retrieve genre id from genre name
+        genre_id = db_methods.searchGenreIDByName(game_genre)
+
+        db_methods.editGame(game_name, game_desc, genre_id,
                             game_price, game_pic, game_id)
         time.sleep(0.1)
         return redirect('/games/%s/info' % game.id)
