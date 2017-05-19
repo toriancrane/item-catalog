@@ -4,13 +4,11 @@
 <link rel="stylesheet" type="text/css" href="/static/games.css">
 <!-- Left Nav -->
 <div class="navbar navbar-inverse navbar-fixed-left">
-	<ul class="nav navbar-nav">
+	<ul class="nav navbar-nav" id="genre-menu">
    		<li><span class="navbar-text"><h2>Genres</h2></span></li>
-   		<div class="nav navbar-nav" id="genre-menu">
    		{% for g in genres %}
 			<li><a href="/games/genre/{{g.id}}/">{{g.name}}</a></li>
    		{% endfor %}
-   		</div>
   	</ul>
 </div>
 
@@ -20,16 +18,14 @@
     <div class="col-md-7">
         <div class="panel panel-default post-panel">
             <div class="panel-body">
-                <span>
-                    <h1 class="panel-title pull-left" style="font-size:30px;">Recently Added</h1>
-                    <div class="dropdown pull-right">
-                      <a href="/games/new/">
-                        <button class="btn btn-success" type="button">
-                            <i class="fa fa-plus" aria-hidden="true"></i>Add New Game
-                        </button>
-                      </a>
-                    </div>
-                </span>
+                <h1 class="panel-title pull-left" style="font-size:30px;">Recently Added</h1>
+                <div class="dropdown pull-right">
+                  <a href="/games/new/">
+                    <button class="btn btn-success" type="button">
+                        <i class="fa fa-plus" aria-hidden="true"></i>Add New Game
+                    </button>
+                  </a>
+                </div>
                 <br><br><hr>
                 <span></span>
             </div>
@@ -37,7 +33,15 @@
     </div>
     <div class="col-md-2"></div>	
 </div>
-
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <div class="alert alert-danger text-center" role="alert">{{ message }}</div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-9">

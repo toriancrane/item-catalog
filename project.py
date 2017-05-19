@@ -125,7 +125,6 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
 
@@ -183,7 +182,7 @@ def createUser(login_session):
     user_pic = login_session['picture']
     db_methods.addNewUser(user_name, user_email, user_pic)
 
-    user_id = db_methods.getUserID(user_email)
+    user_id = db_methods.getUserIDByEmail(user_email)
     return user_id
 
 
@@ -231,8 +230,6 @@ def gamesByGenrePage(genre_id):
 @login_required
 def newGamePage():
     """ Create New Game Function """
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         game_name = request.form['game_name']
         game_desc = request.form['game_desc']
@@ -251,6 +248,7 @@ def newGamePage():
 
         return redirect('/games/%s/info' % game.id)
     else:
+        game_user = login_session['user_id']
         return render_template('newgame.html', user_id=game_user)
 
 
@@ -270,6 +268,12 @@ def viewGamePage(game_id):
 def editGamePage(game_id):
     """ Edit Game Function """
     game = db_methods.searchGameByID(game_id)
+    user_id = login_session['user_id']
+
+    if user_id != game.user_id:
+        flash('You do not have permission to edit games that you did not create.')
+        return redirect('/games/')
+
     if request.method == 'POST':
         game_name = request.form['game_name']
         game_desc = request.form['game_desc']
@@ -285,7 +289,6 @@ def editGamePage(game_id):
         time.sleep(0.1)
         return redirect('/games/%s/info' % game.id)
     else:
-        user_id = login_session['user_id']
         return render_template('editgame.html', game=game,
                                user_id=user_id)
 
@@ -294,13 +297,18 @@ def editGamePage(game_id):
 @login_required
 def deleteGamePage(game_id):
     game = db_methods.searchGameByID(game_id)
+    user_id = login_session['user_id']
+
+    if user_id != game.user_id:
+        flash('You do not have permission to delete games that you did not create.')
+        return redirect('/games/')
+
     if request.method == 'POST':
         error = game.name + " has been deleted from the database."
         db_methods.deleteGame(game_id)
         return render_template('deleteconfirmation.html', error=error)
     else:
         error = "Are you sure you want to delete this game?"
-        user_id = login_session['user_id']
         return render_template('deletegame.html', error=error,
                                game=game, user_id=user_id)
 
