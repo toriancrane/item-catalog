@@ -10,6 +10,16 @@ They will then need to clone this Github Repo by running the following command i
 
 Use the terminal to navigate into the folder where the application files are housed.
 
+The contents of the folder include a number of files:
+
+* project.py is used to run the web server
+* requirements.txt is used to help users install all of the necessary requirements to run the application
+* database_setup.py is used to initalize the database
+* lotsofgames.py is used to populate the database with dummy information
+* db_methods.py houses the database queries that are used to manipulate the CRUD database functions
+* the templates folder holds all of the HTML templates used to render the application
+* the static folder holds all of the css files used for styling
+
 To install the requirements necessary to run the application, enter:
 
     $ pip install -r requirements.txt
