@@ -5,7 +5,7 @@ from flask import(
     request,
     redirect,
     url_for,
-    render_template,
+    render_template as flask_render,
     make_response,
     jsonify)
 from functools import wraps
@@ -186,14 +186,19 @@ def createUser(login_session):
     return user_id
 
 
+def render_template(template_name, **params):
+    if 'username' in login_session:
+        params['user_id'] = login_session['username']
+    return flask_render(template_name, **params)
+
+
 @app.route('/')
 def frontPage():
     """ Front Page Function """
     if 'username' not in login_session:
-        return render_template('front.html')
+        return flask_render('front.html')
     else:
-        user_id = login_session['user_id']
-        return render_template('front.html', user_id=user_id)
+        return render_template('front.html')
 
 
 @app.route('/games/')
@@ -205,9 +210,8 @@ def gamesPage():
         return render_template('publicgames.html', games=games_list,
                                genres=genres)
     else:
-        user_id = login_session['user_id']
         return render_template('games.html', games=games_list,
-                               genres=genres, user_id=user_id)
+                               genres=genres)
 
 
 @app.route('/games/genre/<int:genre_id>/')
@@ -220,10 +224,8 @@ def gamesByGenrePage(genre_id):
         return render_template('publicgamesbygenre.html', games=games_list,
                                genres=all_genres, genre=genre)
     else:
-        user_id = login_session['user_id']
         return render_template('gamesbygenre.html', games=games_list,
-                               genres=all_genres, genre=genre,
-                               user_id=user_id)
+                               genres=all_genres, genre=genre)
 
 
 @app.route('/games/new/', methods=['GET', 'POST'])
@@ -248,8 +250,7 @@ def newGamePage():
 
         return redirect('/games/%s/info' % game.id)
     else:
-        game_user = login_session['user_id']
-        return render_template('newgame.html', user_id=game_user)
+        return render_template('newgame.html')
 
 
 @app.route('/games/<int:game_id>/info/')
@@ -257,10 +258,11 @@ def viewGamePage(game_id):
     """ View Game Info Function """
     game = db_methods.searchGameByID(game_id)
     if 'username' not in login_session:
-        return render_template('publicinfo.html', game=game)
+        return flask_render('publicinfo.html', game=game)
     else:
         user_id = login_session['user_id']
-        return render_template('info.html', game=game, user_id=user_id)
+        return flask_render('info.html', game=game, 
+                            user_id=user_id)
 
 
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
@@ -289,8 +291,8 @@ def editGamePage(game_id):
         time.sleep(0.1)
         return redirect('/games/%s/info' % game.id)
     else:
-        return render_template('editgame.html', game=game,
-                               user_id=user_id)
+        return flask_render('editgame.html', game=game,
+                            user_id=user_id)
 
 
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
@@ -310,7 +312,7 @@ def deleteGamePage(game_id):
     else:
         error = "Are you sure you want to delete this game?"
         return render_template('deletegame.html', error=error,
-                               game=game, user_id=user_id)
+                               game=game)
 
 # JSON API Endpoints
 
