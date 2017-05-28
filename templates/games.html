@@ -2,16 +2,6 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="/static/games.css">
-<!-- Left Nav -->
-<div class="navbar navbar-inverse navbar-fixed-left">
-	<ul class="nav navbar-nav" id="genre-menu">
-   		<li><span class="navbar-text"><h2>Genres</h2></span></li>
-   		{% for g in genres %}
-			<li><a href="/games/genre/{{g.id}}/">{{g.name}}</a></li>
-   		{% endfor %}
-  	</ul>
-</div>
-
 <div class="row">
 	<div style="padding-top:25px;"> </div>
     <div class="col-md-3"></div>
