@@ -35,6 +35,11 @@
     border-radius: .28571429rem;
     box-shadow: 0 0 15px black;
     background-color: #D7CEC7;
+    max-width: 300px;
+}
+
+h4 {
+    height: 30px;
 }
 
 .card-block {
@@ -50,6 +55,8 @@
 
 .card-img-top {
     display: block;
+    min-width: 75%;
+    min-height: 325px;
     width: 100%;
     height: 325px;
 }
@@ -58,20 +65,4 @@
     font-size: 1.28571429em;
     font-weight: 700;
     line-height: 1.2857em;
-}
-
-.card-footer {
-    font-size: 1em;
-    position: static;
-    top: 0;
-    left: 0;
-    max-width: 100%;
-    padding: .75em 1em;
-    color: rgba(0, 0, 0, .4);
-    border-top: 1px solid rgba(0, 0, 0, .05) !important;
-    background: #fff;
-}
-
-.card-inverse .btn {
-    border: 1px solid rgba(0, 0, 0, .05);
 }
