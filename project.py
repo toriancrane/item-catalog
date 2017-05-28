@@ -337,5 +337,5 @@ def gamesByGenreJSON(genre_id):
 if __name__ == '__main__':
     app.secret_key = 'gDI1tL5OC54UiTF3g18a-bWg'
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)
-    # Change this back to be pushed to heroku
+    # app.run(host='0.0.0.0', port=8000)
+    app.run(host = '0.0.0.0', port = int(os.environ.get('PORT', 33507)))
