@@ -195,10 +195,11 @@ def render_template(template_name, **params):
 @app.route('/')
 def frontPage():
     """ Front Page Function """
+    genres = db_methods.getAllGenres()
     if 'username' not in login_session:
-        return flask_render('front.html')
+        return flask_render('front.html', genres=genres)
     else:
-        return render_template('front.html')
+        return render_template('front.html', genres=genres)
 
 
 @app.route('/games/')
@@ -250,25 +251,28 @@ def newGamePage():
 
         return redirect('/games/%s/info' % game.id)
     else:
-        return render_template('newgame.html')
+        genres = db_methods.getAllGenres()
+        return render_template('newgame.html', genres=genres)
 
 
 @app.route('/games/<int:game_id>/info/')
 def viewGamePage(game_id):
     """ View Game Info Function """
+    genres = db_methods.getAllGenres()
     game = db_methods.searchGameByID(game_id)
     if 'username' not in login_session:
-        return flask_render('publicinfo.html', game=game)
+        return flask_render('publicinfo.html', game=game, genres=genres)
     else:
         user_id = login_session['user_id']
         return flask_render('info.html', game=game, 
-                            user_id=user_id)
+                            user_id=user_id, genres=genres)
 
 
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
 @login_required
 def editGamePage(game_id):
     """ Edit Game Function """
+    genres = db_methods.getAllGenres()
     game = db_methods.searchGameByID(game_id)
     user_id = login_session['user_id']
 
@@ -292,12 +296,13 @@ def editGamePage(game_id):
         return redirect('/games/%s/info' % game.id)
     else:
         return flask_render('editgame.html', game=game,
-                            user_id=user_id)
+                            user_id=user_id, genres=genres)
 
 
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 @login_required
 def deleteGamePage(game_id):
+    genres = db_methods.getAllGenres()
     game = db_methods.searchGameByID(game_id)
     user_id = login_session['user_id']
 
@@ -308,11 +313,11 @@ def deleteGamePage(game_id):
     if request.method == 'POST':
         error = game.name + " has been deleted from the database."
         db_methods.deleteGame(game_id)
-        return render_template('deleteconfirmation.html', error=error)
+        return render_template('deleteconfirmation.html', error=error, genres=genres)
     else:
         error = "Are you sure you want to delete this game?"
         return render_template('deletegame.html', error=error,
-                               game=game)
+                               game=game, genres=genres)
 
 # JSON API Endpoints
 
